@@ -24,7 +24,6 @@ public class DispatchMessageServlet extends HttpServlet {
 		String slideId = req.getParameter(SLIDES_ID_TOKEN);
 		// TODO json
 		String cmd = req.getParameter(CMD_TOKEN);
-		System.out.println(cmd);
 		channelService.sendMessage(new ChannelMessage(slideId, cmd));
 	}
 

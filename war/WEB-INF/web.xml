@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-	<!-- Slides -->
+	<!-- Google V1 -->
+	<servlet-mapping>
+		<servlet-name>GoogleSlidesV1Servlet</servlet-name>
+		<url-pattern>/googlev1/*</url-pattern>
+	</servlet-mapping>
 	<servlet>
-		<servlet-name>GoogleSlidesV2Servlet</servlet-name>
-		<servlet-class>nfrancois.prezpush.servlet.GoogleSlidesV2Servlet</servlet-class>
+		<servlet-name>GoogleSlidesV1Servlet</servlet-name>
+		<servlet-class>nfrancois.prezpush.servlet.GoogleSlidesV1Servlet</servlet-class>
 	</servlet>
+
+	<!-- Google V2 -->
 	<servlet-mapping>
 		<servlet-name>GoogleSlidesV2Servlet</servlet-name>
 		<url-pattern>/googlev2/*</url-pattern>
 	</servlet-mapping>
-	<!-- Slides Remote -->
 	<servlet>
-		<servlet-name>DispatchMessageServlet</servlet-name>
-		<servlet-class>nfrancois.prezpush.servlet.DispatchMessageServlet</servlet-class>
+		<servlet-name>GoogleSlidesV2Servlet</servlet-name>
+		<servlet-class>nfrancois.prezpush.servlet.GoogleSlidesV2Servlet</servlet-class>
 	</servlet>
+	
+
+	<!-- Remote -->
 	<servlet-mapping>
 		<servlet-name>DispatchMessageServlet</servlet-name>
 		<url-pattern>/dispatchmessage</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>DispatchMessageServlet</servlet-name>
+		<servlet-class>nfrancois.prezpush.servlet.DispatchMessageServlet</servlet-class>
+	</servlet>
 
+	<!-- Welcome file -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+
 </web-app>
