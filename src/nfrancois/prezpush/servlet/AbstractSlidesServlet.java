@@ -1,6 +1,7 @@
 package nfrancois.prezpush.servlet;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -64,8 +65,8 @@ public abstract class AbstractSlidesServlet extends HttpServlet {
 		}
 	}
 	
-	private String getContent(HTTPResponse response){
-		return new String(response.getContent());
+	private String getContent(HTTPResponse response) throws UnsupportedEncodingException{
+		return new String(response.getContent(), "UTF-8");
 	}
 	
 	private String insertJS(String html, String channelId, String slidesId){
