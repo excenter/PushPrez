@@ -8,8 +8,7 @@ initViewer = function(_channelId, _slidesId){
 	initSocket(_channelId, _slidesId);
 	socket.onopen = notifyRemote;
 	socket.onmessage = remoteReceive;
-	socket.onclose = disconnect;
-	analyse();
+	socket.onclose = function() {alert('Channel close.');};
 	// TODO socket.onerror : => Toast error
 }
 
@@ -37,13 +36,9 @@ disconnect = function(){
 	sendMessage(dispatchMessageServlet , cmd(viewerDeconnectionToken));
 }
 
-function analyse(){
-	var slides = jQuery("id:0").length;
-//	alert(slides);
-}
 
 
 jQuery(window).unload(function() {
-//	alert('1');
-	socket.close();
+	alert('1');
+//	socket.close();
 });

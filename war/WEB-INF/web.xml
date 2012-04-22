@@ -22,7 +22,7 @@
 		<servlet-name>GoogleSlidesV2Servlet</servlet-name>
 		<servlet-class>nfrancois.prezpush.servlet.GoogleSlidesV2Servlet</servlet-class>
 	</servlet>
-	
+
 
 	<!-- Remote -->
 	<servlet-mapping>
@@ -38,5 +38,11 @@
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+	
+	<!-- Channel presence -->
+
+	<inbound-services>
+		<service>channel_presence</service>
+	</inbound-services>
 
 </web-app>

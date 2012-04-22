@@ -24,7 +24,7 @@ public abstract class AbstractSlidesServlet extends HttpServlet {
 	private static final String SLIDES_ID_PARAM = "slidesId";	
 	
 	private static final String HEADER_VIEWER_JS = "<script type=\"text/javascript\" src=\"/_ah/channel/jsapi\"></script>\n"+
-	"<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js\"></script>\n"+
+	"<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>\n"+
 	"<script type=\"text/javascript\" src=\"/js/jquery.toastmessage-min.js\"></script>	\n"+
 	"<script type=\"text/javascript\" src=\"/js/slides-commons.js\"></script>\n"+
 	"<script type=\"text/javascript\" src=\"/js/slides-viewer.js\"></script>\n"+
