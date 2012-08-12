@@ -30,10 +30,14 @@ function coucou(){
 }
 
 function simulateKey(code){
-    var key = document.createEvent("KeyEvents");
-    key.initKeyEvent("keydown", true, true, null, false, false, false, false, code, code);
-//	var key = document.createEvent( 'KeyboardEvent' );
-//	key.initKeyboardEvent( 'keydown', true, true, null, false, false, false, false, 39, 39 );
+    var key;
+    try {
+    	key = document.createEvent( 'KeyboardEvent' );
+    	key.initKeyboardEvent( 'keydown', true, true, null, false, false, false, false, code, code);
+    } catch (e) {
+    	key= document.createEvent("KeyEvents");
+    	key.initKeyEvent("keydown", true, true, null, false, false, false, false, code, code);
+	}
     document.documentElement.dispatchEvent(key);		
 }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,15 +15,25 @@ import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.xmpp.JID;
+import com.google.appengine.api.xmpp.Message;
+import com.google.appengine.api.xmpp.MessageBuilder;
+import com.google.appengine.api.xmpp.XMPPService;
+import com.google.appengine.api.xmpp.XMPPServiceFactory;
 
 @SuppressWarnings("serial")
 public abstract class AbstractSlidesServlet extends HttpServlet {
+	
+	private static final Logger log = Logger.getLogger(AbstractSlidesServlet.class.getCanonicalName());
 	
 	private static final String PATH_SEPARATOR = "/";
 	private static final String REMOTE_TOKEN = "remote";
 	private static final String REMOTE_PAGE = "/WEB-INF/jsp/slides-remote.jsp";
 	private static final String CHANNEL_ID_PARAM = "channelId";
 	private static final String SLIDES_ID_PARAM = "slidesId";	
+	private static final String REMOTE_URL_TEMPLATE = "http://%s.appspot.com/%s/%s/remote";
 	
 	private static final String HEADER_VIEWER_JS = "<script type=\"text/javascript\" src=\"/_ah/channel/jsapi\"></script>\n"+
 	"<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>\n"+
@@ -50,9 +61,12 @@ public abstract class AbstractSlidesServlet extends HttpServlet {
 		if (isRemote) {
 			req.getRequestDispatcher(REMOTE_PAGE).forward(req, resp);
 		} else {
+			log.info("Viewer de "+slidesId);
 			URLFetchService urlFetcher= URLFetchServiceFactory.getURLFetchService();
 			HTTPResponse response = urlFetcher.fetch(getURL(slidesId));
 			if(response.getResponseCode() == 200){
+				// TODO async
+				sendUrlRemoteToUser(slidesId);
 				String originalHtml = getContent(response);
 				// TODO : cache
 				String transformedHtml = insertJS(replaceInternalLink(originalHtml), channelId, slidesId);
@@ -80,9 +94,33 @@ public abstract class AbstractSlidesServlet extends HttpServlet {
 		return new URL(String.format(urlTemplate(), slidesId));
 	}
 	
+	private void sendUrlRemoteToUser(String slidesId){
+		User currentUser = UserServiceFactory.getUserService().getCurrentUser();
+		log.info("User = "+currentUser);
+		if(currentUser != null){
+			XMPPService xmppService = XMPPServiceFactory.getXMPPService();
+			JID jid = new JID(currentUser.getEmail());
+			log.info("JID = "+jid);
+//			if(xmppService.getPresence(jid).isAvailable()){
+				String applicationId = System.getProperty("com.google.appengine.application.id");
+				String urlMessage  = String.format(REMOTE_URL_TEMPLATE, applicationId, servletUrl(), slidesId);
+				log.info("Message = "+urlMessage);
+				 Message msg = new MessageBuilder()
+		            .withRecipientJids(jid)
+		            .withBody(urlMessage)
+		            .build();
+				xmppService.sendMessage(msg);
+//			} else {
+//				log.info("User not dispo");
+//			} 		    
+		}
+	}
+	
 	
 	protected abstract String urlTemplate();
 
 	protected abstract String replaceInternalLink(String html);
+	
+	protected abstract String servletUrl();
 
 }

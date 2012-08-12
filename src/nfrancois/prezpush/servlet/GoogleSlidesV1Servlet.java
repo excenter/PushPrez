@@ -86,6 +86,11 @@ public class GoogleSlidesV1Servlet extends AbstractSlidesServlet {
 			return null;
 		}
 		
+	}
+
+	@Override
+	protected String servletUrl() {
+		return "googlev1";
 	}	
 
 }

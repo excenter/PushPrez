@@ -15,6 +15,11 @@ public class GoogleSlidesV2Servlet extends AbstractSlidesServlet {
 	protected String replaceInternalLink(String html) {
 		return html.replaceAll("src=\"/", "src=\"http://docs.google.com/").replaceAll("href=\"/", "href=\"http://docs.google.com/");
 	}
+
+	@Override
+	protected String servletUrl() {
+		return "googlev2";
+	}
 	
 
 }
