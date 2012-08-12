@@ -2,3 +2,5 @@
 .settings/*
 .project
 .DS_Store
+war/WEB-INF/lib/*
+war/WEB-INF/classes/
